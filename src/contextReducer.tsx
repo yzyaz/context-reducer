@@ -10,7 +10,9 @@ export type IDispatch<T = any> = {
   meta?: any;
 };
 /** 增加了回调参数的dispatch类型 */
-export type IDispatchF<S> = IDispatch | ((state: S) => IDispatch);
+export type IDispatchF<S, T = any> =
+  | IDispatch<T>
+  | ((state: S) => IDispatch<T>);
 
 export function useContextReducer<IState = {}>(
   /** 传入的reducer控制 */
@@ -56,22 +58,3 @@ export function useContextReducer<IState = {}>(
 
   return { Provider, useContextReducer };
 }
-
-// // =======以下放入 母 tsx文件中
-// import ContextProvider from './reducer';
-// <ContextProvider>
-// </ContextProvider>
-
-// // //=======以下放入 子 tsx文件中
-// import { useReducerContextHook } from './reducer';
-// const {
-//   state,
-//   dispatch,
-// } = useReducerContextHook();
-// //条件判断 并执行reducer 示列
-// if (data) {
-//   dispatch({
-//     type: 'change_data',
-//     payload: data,
-//   });
-// } else {}

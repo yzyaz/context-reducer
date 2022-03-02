@@ -1,5 +1,5 @@
 import React from 'react';
-import contextReducer from './useContextReducer';
+import contextReducer from '../useContextReducer';
 
 const Show = () => {
   const {

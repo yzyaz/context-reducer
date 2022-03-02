@@ -1,6 +1,6 @@
 import React from 'react';
-import contextReducer from './useContextReducer';
-import EConstants from './constants';
+import contextReducer from '../useContextReducer';
+import EConstants from '../constants';
 
 const enum EType {
   ADD,
