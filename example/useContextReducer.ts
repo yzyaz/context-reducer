@@ -1,4 +1,4 @@
-import { useContextReducer, IDispatch } from '../src/contextReducer';
+import { useContextReducer, IDispatch } from '../src';
 // 也可以不用, type变量抽离, 直接写字符串能认识也行
 import EConstants from './constants';
 // import { useImmerReducer } from 'use-immer';

@@ -1,11 +1,17 @@
 {
-	"name": "use-context-reducer",
+	"name": "context-reducer",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"source": "src/index.tsx",
+	"main": "dist/contextReducer.js",
+	"module": "dist/contextReducer.mjs",
+	"unpkg": "dist/contextReducer.umd.js",
+	"types": "dist/contextReducer.d.ts",
+	"amdName": "UnstatedNext",
+	"sideEffects": false,
 	"scripts": {
 		"example": "parcel example/index.html",
-		"build": "rm -rf dist && microbundle --external react --globals react=React --strict --no-compress",
+		"build": "microbundle --external react --globals react=React --strict --no-compress -o dist",
 		"test": "ava"
 	},
 	"keywords": [],

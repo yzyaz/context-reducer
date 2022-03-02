@@ -1,14 +1,14 @@
 import React from 'react';
 
 /** 普通dispatch类型 */
-export type IDispatch<T = any> = {
+export interface IDispatch<T = any> {
   /** 类型 */
   type: T;
   /** 参数 */
   payload?: any;
   /** 第三值, 可选 */
   meta?: any;
-};
+}
 /** 增加了回调参数的dispatch类型 */
 export type IDispatchF<S, T = any> =
   | IDispatch<T>
