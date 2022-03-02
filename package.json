@@ -11,19 +11,23 @@
 	"sideEffects": false,
 	"scripts": {
 		"example": "parcel example/index.html",
-		"build": "microbundle --external react --globals react=React --strict --no-compress -o dist",
-		"test": "ava"
+		"build": "microbundle --jsx React.createElement --external react --globals react=React --strict --no-compress -o dist"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
+		"@babel/cli": "^7.17.6",
+		"@babel/core": "^7.17.5",
+		"@babel/preset-env": "^7.16.11",
+		"@babel/preset-react": "^7.16.7",
+		"@babel/preset-typescript": "^7.16.7",
 		"@types/react": "^17.0.39",
 		"@types/react-dom": "^17.0.12",
-		"ava": "^4.0.1",
 		"husky": "^7.0.4",
 		"immer": "^9.0.12",
 		"lint-staged": "^12.3.4",
+		"microbundle": "^0.14.2",
 		"parcel": "^2.3.2",
 		"prettier": "^2.5.1",
 		"react": "^17.0.2",
