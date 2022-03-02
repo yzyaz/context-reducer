@@ -6,7 +6,7 @@
 	"main": "dist/context-reducer.js",
 	"module": "dist/context-reducer.mjs",
 	"unpkg": "dist/context-reducer.umd.js",
-	"types": "dist/context-reducer.d.ts",
+	"types": "dist/index.d.ts",
 	"amdName": "ContextReducer",
 	"sideEffects": false,
 	"scripts": {
