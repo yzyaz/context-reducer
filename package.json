@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
-	"scripts": { 
+	"scripts": {
 		"example": "parcel example/index.html",
 		"build": "rm -rf dist && microbundle --external react --globals react=React --strict --no-compress",
 		"test": "ava"
@@ -16,13 +16,15 @@
 		"@types/react-dom": "^17.0.12",
 		"ava": "^4.0.1",
 		"husky": "^7.0.4",
+		"immer": "^9.0.12",
 		"lint-staged": "^12.3.4",
 		"parcel": "^2.3.2",
 		"prettier": "^2.5.1",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"ts-node": "^10.6.0",
-		"typescript": "^4.6.2"
+		"typescript": "^4.6.2",
+		"use-immer": "^0.6.0"
 	},
 	"husky": {
 		"hooks": {

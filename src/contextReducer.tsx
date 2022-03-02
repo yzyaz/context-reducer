@@ -1,7 +1,14 @@
 import React from 'react';
 
 /** 普通dispatch类型 */
-export type IDispatch = { type: string; payload?: any; meta?: any };
+export type IDispatch<T = any> = {
+  /** 类型 */
+  type: T;
+  /** 参数 */
+  payload?: any;
+  /** 第三值, 可选 */
+  meta?: any;
+};
 /** 增加了回调参数的dispatch类型 */
 export type IDispatchF<S> = IDispatch | ((state: S) => IDispatch);
 
@@ -9,7 +16,9 @@ export function useContextReducer<IState = {}>(
   /** 传入的reducer控制 */
   reducer: React.Reducer<IState, IDispatch>,
   /** state默认值 */
-  stateDefault: IState
+  stateDefault: IState,
+  /** 可选参数, 使用useImmerReducer */
+  useImmerReducer?: any
 ) {
   // 处理reducer, 增加dispatch的回调功能
   const thisReducer: React.Reducer<IState, IDispatchF<IState>> = (
@@ -21,7 +30,10 @@ export function useContextReducer<IState = {}>(
   };
 
   //创建 useReducer
-  const useReducerHook = () => React.useReducer(thisReducer, stateDefault);
+  const useReducerHook = () =>
+    useImmerReducer
+      ? useImmerReducer(thisReducer, stateDefault)
+      : React.useReducer(thisReducer, stateDefault);
 
   //创建 useContext
   const Context = React.createContext(
