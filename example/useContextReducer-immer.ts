@@ -32,4 +32,4 @@ export const reducer: Reducer<IState, IDispatch<EConstants>> = (
 };
 
 /** 导出 */
-export default useContextReducer(reducer, stateDefault, useImmerReducer);
+export default useContextReducer({reducer, stateDefault, useImmerReducer});

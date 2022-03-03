@@ -10,24 +10,31 @@ export interface IDispatch<T = any> {
   meta?: any;
 }
 /** 增加了回调参数的dispatch类型 */
-export type IDispatchF<S, T = any> =
-  | IDispatch<T>
-  | ((state: S) => IDispatch<T>);
+export type DispatchF<S, T = any> = IDispatch<T> | ((state: S) => IDispatch<T>);
 
 type TReducer<S> = React.Reducer<S, IDispatch>;
-type TReducerF<S> = React.Reducer<S, IDispatchF<S>>;
+type TReducerF<S> = React.Reducer<S, DispatchF<S>>;
+// 为了支持immer的参数
 type TImmerReducer<S> = (state: S, action: IDispatch) => void;
-type TImmerReducerF<S> = (state: S, action: IDispatchF<S>) => void;
-type TDispatch<S> = React.Dispatch<IDispatchF<S>>;
+type TImmerReducerF<S> = (state: S, action: DispatchF<S>) => void;
+/** 增加了回调参数的dispatch函数类型 */
+export type ReactDispatchF<S = any> = React.Dispatch<DispatchF<S>>;
 
-export function useContextReducer<IState = {}>(
+interface IProps<S, F> {
   /** 传入的reducer控制 */
-  reducer: TReducer<IState> | TImmerReducer<IState>, // 好支持immer
+  reducer: TReducer<S> | TImmerReducer<S>; // 好支持immer
   /** state默认值 */
-  stateDefault: IState,
+  stateDefault: S;
   /** 可选参数, 使用useImmerReducer */
-  useImmerReducer?: any
+  useImmerReducer?: any;
+  useFetch?: (dispatch: ReactDispatchF) => F;
+}
+
+export function useContextReducer<IState = {}, IFetch = {}>(
+  props: IProps<IState, IFetch>
 ) {
+  const { reducer, stateDefault, useImmerReducer, useFetch } = props;
+
   // 处理reducer, 增加dispatch的回调功能
   const thisReducer: TReducerF<IState> | TImmerReducerF<IState> = (
     state,
@@ -47,15 +54,27 @@ export function useContextReducer<IState = {}>(
   const Context = React.createContext(
     {} as {
       state: IState;
-      dispatch: TDispatch<IState>;
-      // fetchUtils: IFetch;
+      dispatch: ReactDispatchF<IState>;
+      fetchUtils?: IFetch;
     }
   );
 
   // 创建包裹context, 传递state, dispatch
   const Provider = React.memo(({ children }: { children: React.ReactNode }) => {
     const [state, dispatch] = useReducerHook();
-    const value = React.useMemo(() => ({ state, dispatch }), [dispatch, state]);
+
+    const fetchUtils = useFetch?.(dispatch) || ({} as IFetch);
+
+    console.log('fetchUtils',fetchUtils)
+    
+    const value = React.useMemo(
+      () => ({
+        state,
+        dispatch,
+        fetchUtils,
+      }),
+      [dispatch, state]
+    );
     return <Context.Provider value={value}>{children}</Context.Provider>;
   });
 

@@ -3,15 +3,18 @@ import contextReducer from '../useContextReducer';
 
 const Show = () => {
   const {
-    state: {
-      data ,
-    },
+    state: { data ,req},
   } = contextReducer.useContextReducer();
 
   return (
     <div>
-      我是show组件:
-      <b>{data}</b>
+      <div>
+        我是show组件:
+        <b>{data}</b>
+      </div>
+      <div>接口返回:
+        <b>{req}</b>
+      </div>
     </div>
   );
 };
