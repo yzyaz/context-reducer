@@ -14,10 +14,22 @@ const Home = () => {
   const { dispatch, fetchUtils, allLoading } =
     contextReducer.useContextReducer();
 
+  // 获取请求方法
   const { fetch, fetchErr } = fetchUtils;
 
+  // 获取fetchLoading
   const fetchLoading = allLoading.fetch;
-  console.log('fetchLoading', fetchLoading);
+  // 查看fetchLoading
+  React.useEffect(() => {
+    console.log('fetchLoading', fetchLoading);
+  }, [fetchLoading]);
+  
+  // 所有接口请求的总loading(只要是useFetch中的接口就会触发)
+  const allFetchLoading = allLoading.allFetchLoading;
+  // 查看allFetchLoading
+  React.useEffect(() => {
+    console.log('allFetchLoading', allFetchLoading);
+  }, [allFetchLoading]);
 
   const clickBtn = React.useCallback((type: EType) => {
     switch (type) {

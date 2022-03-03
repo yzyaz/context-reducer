@@ -50,7 +50,10 @@ export function useContextReducer<IState = {}, IFetch = {}>(
       ? useImmerReducer(thisReducer, stateDefault)
       : React.useReducer(thisReducer as TReducerF<IState>, stateDefault);
 
-  type TAllLoading = { [key in keyof IFetch]: boolean };
+  type TAllLoading = { [key in keyof IFetch]: boolean } & {
+    /** 所有接口请求的总loading */
+    allFetchLoading: boolean;
+  };
   // type TFetchUtils = IFetch & {
   //   allLoading: TAllLoading;
   // };
@@ -68,9 +71,9 @@ export function useContextReducer<IState = {}, IFetch = {}>(
   const Provider = React.memo(({ children }: { children: React.ReactNode }) => {
     const [state, dispatch] = useReducerHook();
 
-    const [allLoading, setAllLoading] = React.useState<TAllLoading>(
-      {} as TAllLoading
-    );
+    const [allLoading, setAllLoading] = React.useState<TAllLoading>({
+      allFetchLoading: false,
+    } as TAllLoading);
 
     const fetchUtils = React.useMemo(() => {
       const obj: any = useFetch?.(dispatch) || {};
@@ -79,16 +82,26 @@ export function useContextReducer<IState = {}, IFetch = {}>(
         if (Object.prototype.hasOwnProperty.call(obj, key)) {
           const element = obj[key];
           if (typeof element === 'function') {
-            // 监听接口函数调用, 加入loading参数
+            // 初始就给fetch的loading设置为false
+            setAllLoading((pre) => ({ ...pre, [key]: false }));
+            // 监听接口函数调用, 改变loading状态
             const proxy = new Proxy(element, {
               async apply(_func, _obj, _args) {
-                setAllLoading((pre) => ({ ...pre, [key]: true }));
+                setAllLoading((pre) => ({
+                  ...pre,
+                  allFetchLoading: true,
+                  [key]: true,
+                }));
                 try {
                   await _func.apply(this, _args);
                 } catch (error) {
                   throw error;
                 }
-                setAllLoading((pre) => ({ ...pre, [key]: false }));
+                setAllLoading((pre) => ({
+                  ...pre,
+                  allFetchLoading: false,
+                  [key]: false,
+                }));
               },
             });
             obj[key] = proxy;
