@@ -116,3 +116,5 @@ export function useContextReducer<IState = {}, IFetch = {}>(
 
   return { Provider, useContextReducer };
 }
+
+export default useContextReducer;
