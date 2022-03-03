@@ -9,7 +9,7 @@ const enum EType {
 }
 
 const Home = () => {
-  const { dispatch,fetchUtils } = contextReducer.useContextReducer();
+  const { dispatch } = contextReducer.useContextReducer();
 
   const clickBtn = React.useCallback((type: EType) => {
     switch (type) {

@@ -6,13 +6,18 @@ const enum EType {
   ADD,
   SUB,
   RESET,
-  REQ,REQE
+  REQ,
+  REQE,
 }
 
 const Home = () => {
-  const { dispatch, fetchUtils } = contextReducer.useContextReducer();
+  const { dispatch, fetchUtils, allLoading } =
+    contextReducer.useContextReducer();
 
-  const { fetch ,fetchErr} = fetchUtils;
+  const { fetch, fetchErr } = fetchUtils;
+
+  const fetchLoading = allLoading.fetch;
+  console.log('fetchLoading', fetchLoading);
 
   const clickBtn = React.useCallback((type: EType) => {
     switch (type) {
@@ -44,11 +49,11 @@ const Home = () => {
 
       case EType.REQ:
         // 接口请求
-        fetch('1')
+        fetch('1');
         break;
 
       case EType.REQE:
-        fetchErr()
+        fetchErr();
         break;
 
       default:

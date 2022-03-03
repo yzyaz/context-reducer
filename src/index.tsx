@@ -50,12 +50,17 @@ export function useContextReducer<IState = {}, IFetch = {}>(
       ? useImmerReducer(thisReducer, stateDefault)
       : React.useReducer(thisReducer as TReducerF<IState>, stateDefault);
 
+  type TAllLoading = { [key in keyof IFetch]: boolean };
+  // type TFetchUtils = IFetch & {
+  //   allLoading: TAllLoading;
+  // };
   //创建 useContext
   const Context = React.createContext(
     {} as {
       state: IState;
       dispatch: ReactDispatchF<IState>;
       fetchUtils?: IFetch;
+      allLoading?: TAllLoading;
     }
   );
 
@@ -63,17 +68,45 @@ export function useContextReducer<IState = {}, IFetch = {}>(
   const Provider = React.memo(({ children }: { children: React.ReactNode }) => {
     const [state, dispatch] = useReducerHook();
 
-    const fetchUtils = useFetch?.(dispatch) || ({} as IFetch);
+    const [allLoading, setAllLoading] = React.useState<TAllLoading>(
+      {} as TAllLoading
+    );
 
-    console.log('fetchUtils',fetchUtils)
-    
+    const fetchUtils = React.useMemo(() => {
+      const obj: any = useFetch?.(dispatch) || {};
+
+      for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          const element = obj[key];
+          if (typeof element === 'function') {
+            // 监听接口函数调用, 加入loading参数
+            const proxy = new Proxy(element, {
+              async apply(_func, _obj, _args) {
+                setAllLoading((pre) => ({ ...pre, [key]: true }));
+                try {
+                  await _func.apply(this, _args);
+                } catch (error) {
+                  throw error;
+                }
+                setAllLoading((pre) => ({ ...pre, [key]: false }));
+              },
+            });
+            obj[key] = proxy;
+          }
+        }
+      }
+
+      return obj as IFetch;
+    }, [dispatch]);
+
     const value = React.useMemo(
       () => ({
         state,
         dispatch,
         fetchUtils,
+        allLoading,
       }),
-      [dispatch, state]
+      [dispatch, state, allLoading]
     );
     return <Context.Provider value={value}>{children}</Context.Provider>;
   });
