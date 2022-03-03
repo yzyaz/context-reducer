@@ -1,6 +1,8 @@
+// 使用useimmer模式
 import { useContextReducer, IDispatch } from '../src';
 // type变量抽离, 也可以不用, 直接写字符串能认识也行
 import EConstants from './constants';
+import { useImmerReducer, Reducer } from 'use-immer';
 
 /** state默认值 */
 export const stateDefault = {
@@ -9,8 +11,8 @@ export const stateDefault = {
 /** state默认值类型 */
 export type IState = typeof stateDefault;
 
-/** reducer控制 */
-export const reducer: React.Reducer<IState, IDispatch<EConstants>> = (
+/** reducer控制-immer模式 */
+export const reducer: Reducer<IState, IDispatch<EConstants>> = (
   state,
   action
 ) => {
@@ -19,16 +21,15 @@ export const reducer: React.Reducer<IState, IDispatch<EConstants>> = (
 
   switch (type) {
     case EConstants.CHANGE_DATA: {
-      return {
-        ...state,
-        data: payload,
-      };
+      // 使用immer可以直接赋值
+      state.data = payload;
+      break;
     }
 
     default:
-      return state;
+      break;
   }
 };
 
 /** 导出 */
-export default useContextReducer(reducer, stateDefault);
+export default useContextReducer(reducer, stateDefault, useImmerReducer);

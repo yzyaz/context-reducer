@@ -14,16 +14,22 @@ export type IDispatchF<S, T = any> =
   | IDispatch<T>
   | ((state: S) => IDispatch<T>);
 
+type TReducer<S> = React.Reducer<S, IDispatch>;
+type TReducerF<S> = React.Reducer<S, IDispatchF<S>>;
+type TImmerReducer<S> = (state: S, action: IDispatch) => void;
+type TImmerReducerF<S> = (state: S, action: IDispatchF<S>) => void;
+type TDispatch<S> = React.Dispatch<IDispatchF<S>>;
+
 export function useContextReducer<IState = {}>(
   /** 传入的reducer控制 */
-  reducer: React.Reducer<IState, IDispatch>,
+  reducer: TReducer<IState> | TImmerReducer<IState>, // 好支持immer
   /** state默认值 */
   stateDefault: IState,
   /** 可选参数, 使用useImmerReducer */
   useImmerReducer?: any
 ) {
   // 处理reducer, 增加dispatch的回调功能
-  const thisReducer: React.Reducer<IState, IDispatchF<IState>> = (
+  const thisReducer: TReducerF<IState> | TImmerReducerF<IState> = (
     state,
     action
   ) => {
@@ -35,13 +41,13 @@ export function useContextReducer<IState = {}>(
   const useReducerHook = () =>
     useImmerReducer
       ? useImmerReducer(thisReducer, stateDefault)
-      : React.useReducer(thisReducer, stateDefault);
+      : React.useReducer(thisReducer as TReducerF<IState>, stateDefault);
 
   //创建 useContext
   const Context = React.createContext(
     {} as {
       state: IState;
-      dispatch: React.Dispatch<IDispatchF<IState>>;
+      dispatch: TDispatch<IState>;
       // fetchUtils: IFetch;
     }
   );
