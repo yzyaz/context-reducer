@@ -3,15 +3,15 @@
 	"version": "1.0.4",
 	"description": "使用useContext和useReducer的一个轻量状态管理库",
 	"source": "src/index.tsx",
-	"main": "dist/context-reducer.js",
-	"module": "dist/context-reducer.mjs",
-	"unpkg": "dist/context-reducer.umd.js",
-	"types": "dist/index.d.ts",
+	"main": "file/context-reducer.js",
+	"module": "file/context-reducer.mjs",
+	"unpkg": "file/context-reducer.umd.js",
+	"types": "file/index.d.ts",
 	"amdName": "ContextReducer",
 	"sideEffects": false,
 	"scripts": {
 		"example": "parcel example/index.html",
-		"build": "microbundle --jsx React.createElement --external react --globals react=React --strict --no-compress -o dist"
+		"build": "microbundle --jsx React.createElement --external react --globals react=React --strict --no-compress -o file"
 	},
 	"keywords": [
 		"context",

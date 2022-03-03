@@ -5,6 +5,8 @@
 
 # production
 dist
+build
+file
 
 npm-debug.log*
 yarn-debug.log*
