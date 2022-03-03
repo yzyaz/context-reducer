@@ -1,6 +1,6 @@
 {
 	"name": "context-reducer",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "使用useContext和useReducer的一个轻量状态管理库",
 	"source": "src/index.tsx",
 	"main": "file/context-reducer.js",
