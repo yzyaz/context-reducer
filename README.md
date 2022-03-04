@@ -33,6 +33,8 @@ npm install --save context-reducer
 ```
 
 ## 基本使用
+
+##### example地址: https://github.com/yzyaz/context-reducer/tree/master/example
 #### useContextReducer.ts
 ```js
 import useContextReducer, { IDispatch } from 'context-reducer';
@@ -283,9 +285,7 @@ const Home = () => {
 +  const { fetch, fetchErr } = fetchUtils;
 
 +  // 获取loading
-+  const allFetchLoading = allLoading.allFetchLoading;
-+  const fetchLoading = allLoading.fetch;
-+  const fetchErrLoading = allLoading.fetchErr;
++  const { allFetchLoading, fetchLoading, fetchErrLoading } = allLoading
 
   const clickBtn = React.useCallback((type: string) => {
     switch (type) { 
@@ -318,7 +318,17 @@ export default React.memo(Home);
 
 ```
 
-## 使用useImmer
+#### 关于allLoading
+```js
+   // 此库会自动跟踪每个接口方法的状态(接口方法在useFetch.ts中), 无需手动添加
+   const { allLoading } = contextReducer.useContextReducer();
+   // allFetchLoading: 所有接口的请求状态
+   // fetchLoading: 对应fetch接口方法的请求状态
+   // fetchErrLoading: 对应fetchErr接口方法的请求状态
+   const { allFetchLoading, fetchLoading, fetchErrLoading } = allLoading
+```
+
+## 选择使用useImmer
 ```diff
 // useContextReducer.ts入口文件中
 import useContextReducer, { IDispatch } from 'context-reducer';
