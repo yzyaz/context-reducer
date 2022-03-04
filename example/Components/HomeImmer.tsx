@@ -42,7 +42,7 @@ const Home = () => {
       default:
         break;
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

@@ -71,7 +71,7 @@ const Home = () => {
       default:
         break;
     }
-  }, []);
+  }, [dispatch, fetch, fetchErr]);
 
   return (
     <>

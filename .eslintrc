@@ -1,0 +1,10 @@
+{
+    "env": {},
+    "extends": [
+        "react-app"
+    ],
+    "parserOptions": {},
+    "plugins": [],
+    "globals": {},
+    "rules": {}
+}

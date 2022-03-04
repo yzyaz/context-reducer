@@ -119,7 +119,7 @@ export function useContextReducer<IState = {}, IFetch = {}>(
         fetchUtils,
         allLoading,
       }),
-      [dispatch, state, allLoading]
+      [state, dispatch, fetchUtils, allLoading]
     );
     return <Context.Provider value={value}>{children}</Context.Provider>;
   });
