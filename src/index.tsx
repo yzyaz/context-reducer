@@ -48,10 +48,10 @@ export function createContextReducer<IState = {}, IFetch = {}>(
   //创建 useReducer
   const useReducerHook = () =>
     useImmerReducer
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      ? useImmerReducer(thisReducer, stateDefault)
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      : React.useReducer(thisReducer as TReducerF<IState>, stateDefault);
+      ? // eslint-disable-next-line react-hooks/rules-of-hooks
+        useImmerReducer(thisReducer, stateDefault)
+      : // eslint-disable-next-line react-hooks/rules-of-hooks
+        React.useReducer(thisReducer as TReducerF<IState>, stateDefault);
 
   type TAllLoading = { [key in keyof IFetch]: boolean } & {
     /** 所有接口请求的总loading */
@@ -78,7 +78,7 @@ export function createContextReducer<IState = {}, IFetch = {}>(
       allFetchLoading: false,
     } as TAllLoading);
 
-    const fetchUtils = React.useMemo(() => { 
+    const fetchUtils = React.useMemo(() => {
       const obj: any = fetchContainer?.(dispatch) || {};
 
       for (const key in obj) {

@@ -1,6 +1,6 @@
-.rts2_cache_*
 node_modules
 .*ignore
 dist
+file
 build
 LICENSE
