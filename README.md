@@ -37,7 +37,7 @@ npm install --save context-reducer
 ##### example地址: https://github.com/yzyaz/context-reducer/tree/master/example
 #### useContextReducer.ts
 ```js
-import useContextReducer, { IDispatch } from 'context-reducer';
+import createContextReducer, { IDispatch } from 'context-reducer';
 
 /** 初始state值 */
 const stateDefault = {
@@ -67,7 +67,7 @@ export const reducer: React.Reducer<IState, IDispatch> = (
   }
 };
 
-export default useContextReducer({ reducer, stateDefault });
+export default createContextReducer({ reducer, stateDefault });
 ```
 #### index.tsx
 ```js
@@ -167,12 +167,12 @@ _如上, 即可通过dispatch修改reducer中的值, 如果你使用过useReduce
 ## 接口请求
 
 1 新建一个方法包含此模块的所有请求(使用dispatch修改状态即可, 其他是正常的js语法):
-#### useFetch.ts
+#### fetchContainer.ts
 ```js
 import axios from 'axios';
 import { ReactDispatchF } from 'context-reducer';
 
-const useFetch = (dispatch: ReactDispatchF) => {
+const fetchContainer = (dispatch: ReactDispatchF) => {
   /** 接口1 */
   const fetch = async (
     /** 请求参数 */
@@ -216,14 +216,14 @@ const useFetch = (dispatch: ReactDispatchF) => {
   };
 };
 
-export default useFetch;
+export default fetchContainer;
 ```
 
 2 在配置文件中引入请求方法
 #### useContextReducer.ts
 ```diff
-import useContextReducer,{  IDispatch } from 'context-reducer';
-+ import useFetch from './useFetch';
+import createContextReducer,{  IDispatch } from 'context-reducer';
++ import fetchContainer from './fetchContainer';
 
 /** state默认值 */
 const stateDefault = {
@@ -265,8 +265,8 @@ export const reducer: React.Reducer<IState, IDispatch> = (
 
 // ...
 
-export default useContextReducer({ reducer, stateDefault, 
-+ useFetch 
+export default createContextReducer({ reducer, stateDefault, 
++ fetchContainer 
 });
 ```
 
@@ -331,7 +331,7 @@ export default React.memo(Home);
 ## 选择使用useImmer
 ```diff
 // useContextReducer.ts入口文件中
-import useContextReducer, { IDispatch } from 'context-reducer';
+import createContextReducer, { IDispatch } from 'context-reducer';
 +import { useImmerReducer, Reducer } from 'use-immer';
 
 /** state默认值 */
@@ -374,7 +374,7 @@ type IState = typeof stateDefault;
 
 };
 
-export default useContextReducer({ reducer, stateDefault,
+export default createContextReducer({ reducer, stateDefault,
 + useImmerReducer 
 });
 ```
@@ -384,12 +384,12 @@ export default useContextReducer({ reducer, stateDefault,
 ### `useContextReducer(useHook)`
 
 ```js
-import useContextReducer from 'context-reducer';
+import createContextReducer from 'context-reducer';
 
 // reducer 状态管理逻辑(见上)
 // stateDefault 初始state值
-// useFetch fetch方法集合, 可选
-const ContextReducer  = useContextReducer({ reducer, stateDefault, useFetch });
+// fetchContainer fetch方法集合, 可选
+const ContextReducer  = createContextReducer({ reducer, stateDefault, fetchContainer });
 // ContextReducer  === { Provider, useContextReducer }
 ```
 ### `<ContextReducer.Provider>`
@@ -440,11 +440,11 @@ const reducer: React.Reducer<IState, IDispatch<string>> = (
 
 ### `ReactDispatchF(TS)`
 ```js 
-// useFetch.ts接口文件中
+// fetchContainer.ts接口文件中
 import { ReactDispatchF } from 'context-reducer'; 
 
 // s声明这里使用的dispatch类型, 除了自身的类型外还包含回调参数类型
-const useFetch = (dispatch: ReactDispatchF<string>) => {
+const fetchContainer = (dispatch: ReactDispatchF<string>) => {
   /** 接口 */
   const fetch = async (
     /** 请求参数 */

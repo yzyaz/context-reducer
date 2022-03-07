@@ -27,13 +27,14 @@ interface IProps<S, F> {
   stateDefault: S;
   /** 可选参数, 使用useImmerReducer */
   useImmerReducer?: any;
-  useFetch?: (dispatch: ReactDispatchF) => F;
+  /** 请求接口函数容器 */
+  fetchContainer?: (dispatch: ReactDispatchF) => F;
 }
 
-export function useContextReducer<IState = {}, IFetch = {}>(
+export function createContextReducer<IState = {}, IFetch = {}>(
   props: IProps<IState, IFetch>
 ) {
-  const { reducer, stateDefault, useImmerReducer, useFetch } = props;
+  const { reducer, stateDefault, useImmerReducer, fetchContainer } = props;
 
   // 处理reducer, 增加dispatch的回调功能
   const thisReducer: TReducerF<IState> | TImmerReducerF<IState> = (
@@ -47,7 +48,9 @@ export function useContextReducer<IState = {}, IFetch = {}>(
   //创建 useReducer
   const useReducerHook = () =>
     useImmerReducer
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       ? useImmerReducer(thisReducer, stateDefault)
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       : React.useReducer(thisReducer as TReducerF<IState>, stateDefault);
 
   type TAllLoading = { [key in keyof IFetch]: boolean } & {
@@ -75,8 +78,8 @@ export function useContextReducer<IState = {}, IFetch = {}>(
       allFetchLoading: false,
     } as TAllLoading);
 
-    const fetchUtils = React.useMemo(() => {
-      const obj: any = useFetch?.(dispatch) || {};
+    const fetchUtils = React.useMemo(() => { 
+      const obj: any = fetchContainer?.(dispatch) || {};
 
       for (const key in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, key)) {
@@ -130,4 +133,4 @@ export function useContextReducer<IState = {}, IFetch = {}>(
   return { Provider, useContextReducer };
 }
 
-export default useContextReducer;
+export default createContextReducer;

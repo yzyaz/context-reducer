@@ -1,8 +1,8 @@
-import useContextReducer,{  IDispatch } from '../src';
+import createContextReducer,{  IDispatch } from '../src';
 // type变量抽离, 也可以不用, 直接写字符串能认识也行
 import EConstants from './constants';
 
-import useFetch from './useFetch';
+import fetchContainer from './fetchContainer';
 
 /** state默认值 */
 export const stateDefault = {
@@ -46,4 +46,4 @@ export const reducer: React.Reducer<IState, IDispatch<EConstants>> = (
 };
 
 /** 导出 */
-export default useContextReducer({ reducer, stateDefault, useFetch });
+export default createContextReducer({ reducer, stateDefault, fetchContainer });

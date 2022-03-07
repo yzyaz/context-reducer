@@ -3,7 +3,7 @@ import { ReactDispatchF } from '../src';
 // type变量抽离, 也可以不用, 直接写字符串能认识也行
 import EConstants from './constants';
 
-const useFetch = (dispatch: ReactDispatchF<EConstants>) => {
+const fetchFun = (dispatch: ReactDispatchF<EConstants>) => {
   /** 正确接口 */
   const fetch = async (
     /** 请求参数 */
@@ -58,6 +58,6 @@ const useFetch = (dispatch: ReactDispatchF<EConstants>) => {
   };
 };
 
-export default useFetch;
+export default fetchFun;
 
-// export type IFetch = ReturnType<typeof useFetch>;
+// export type IFetch = ReturnType<typeof fetchFun>;

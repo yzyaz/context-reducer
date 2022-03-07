@@ -1,5 +1,5 @@
 // 使用useimmer模式
-import useContextReducer, { IDispatch } from '../src';
+import createContextReducer, { IDispatch } from '../src';
 // type变量抽离, 也可以不用, 直接写字符串能认识也行
 import EConstants from './constants';
 import { useImmerReducer, Reducer } from 'use-immer';
@@ -32,4 +32,4 @@ export const reducer: Reducer<IState, IDispatch<EConstants>> = (
 };
 
 /** 导出 */
-export default useContextReducer({ reducer, stateDefault, useImmerReducer });
+export default createContextReducer({ reducer, stateDefault, useImmerReducer });
