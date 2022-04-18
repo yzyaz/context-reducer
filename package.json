@@ -22,7 +22,7 @@
     "redux"
   ],
   "author": "yzyaz",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.5",
@@ -54,7 +54,7 @@
     "directory": ""
   },
   "bugs": {
-    "url": "https://github.com/facebook/create-react-app/issues"
+    "url": "https://github.com/facebook/context-reducer/issues"
   },
   "lint-staged": {
     "*.{jsx,js,ts,tsx,json,md,css,less}": [
